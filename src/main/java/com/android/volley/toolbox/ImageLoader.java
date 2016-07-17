@@ -93,6 +93,8 @@ public class ImageLoader {
      * @param view The imageView that the listener is associated with.
      * @param defaultImageResId Default image resource ID to use, or 0 if it doesn't exist.
      * @param errorImageResId Error image resource ID to use, or 0 if it doesn't exist.
+     *
+     *          获取imagelistener监听器。
      */
     public static ImageListener getImageListener(final ImageView view,
             final int defaultImageResId, final int errorImageResId) {
@@ -177,6 +179,8 @@ public class ImageLoader {
      * request is fulfilled.
      *
      * @param requestUrl The URL of the image to be loaded.
+     *
+     *    通过url获取 网络图片
      */
     public ImageContainer get(String requestUrl, final ImageListener listener) {
         return get(requestUrl, listener, 0, 0);
@@ -209,10 +213,9 @@ public class ImageLoader {
 
         // only fulfill requests that were initiated from the main thread.
         throwIfNotOnMainThread();
-
         final String cacheKey = getCacheKey(requestUrl, maxWidth, maxHeight, scaleType);
-
         // Try to look up the request in the cache of remote images.
+        /**默认先从内存中加载图片。*/
         Bitmap cachedBitmap = mCache.getBitmap(cacheKey);
         if (cachedBitmap != null) {
             // Return the cached bitmap.
@@ -221,7 +224,7 @@ public class ImageLoader {
             return container;
         }
 
-        // The bitmap did not exist in the cache, fetch it!
+        // The bitmap did not exist in the cache, fetch it! 从网络中获取。
         ImageContainer imageContainer =
                 new ImageContainer(null, requestUrl, cacheKey, imageListener);
 
@@ -397,7 +400,7 @@ public class ImageLoader {
         /** Error if one occurred for this response */
         private VolleyError mError;
 
-        /** List of all of the active ImageContainers that are interested in the request */
+        /** List of all of the active ImageContainers that are interested in the request  请求队列!*/
         private final LinkedList<ImageContainer> mContainers = new LinkedList<ImageContainer>();
 
         /**

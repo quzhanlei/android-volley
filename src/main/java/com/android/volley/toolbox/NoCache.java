@@ -22,6 +22,8 @@ import com.android.volley.Cache;
  * A cache that doesn't.
  */
 public class NoCache implements Cache {
+
+    //缓存文件全部会被清除
     @Override
     public void clear() {
     }
@@ -38,7 +40,7 @@ public class NoCache implements Cache {
     @Override
     public void invalidate(String key, boolean fullExpire) {
     }
-
+    //移除对应url的缓存文件
     @Override
     public void remove(String key) {
     }

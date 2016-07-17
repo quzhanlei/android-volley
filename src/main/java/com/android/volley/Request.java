@@ -148,6 +148,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      * tag by {@link RequestQueue#cancelAll(Object)}.
      *
      * @return This Request object to allow for chaining.
+     * 设置一个Tag，用来标记这个请求，取消请求时候我们可以通过这个Tag来取消某个或者所有请求
      */
     public Request<?> setTag(Object tag) {
         mTag = tag;

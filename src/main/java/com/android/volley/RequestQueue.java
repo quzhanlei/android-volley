@@ -186,6 +186,7 @@ public class RequestQueue {
      * {@link RequestQueue#cancelAll(RequestFilter)}.
      */
     public interface RequestFilter {
+
         public boolean apply(Request<?> request);
     }
 
@@ -194,9 +195,13 @@ public class RequestQueue {
      * @param filter The filtering function to use
      */
     public void cancelAll(RequestFilter filter) {
+        //
         synchronized (mCurrentRequests) {
+            //
             for (Request<?> request : mCurrentRequests) {
+                // 如果filter.apply(request)为真,就认为找到请求的标志,
                 if (filter.apply(request)) {
+                    //将将标志设为真!!
                     request.cancel();
                 }
             }
@@ -206,6 +211,7 @@ public class RequestQueue {
     /**
      * Cancels all requests in this queue with the given tag. Tag must be non-null
      * and equality is by identity.
+     * 取消所有的网络请求!
      */
     public void cancelAll(final Object tag) {
         if (tag == null) {
@@ -214,6 +220,7 @@ public class RequestQueue {
         cancelAll(new RequestFilter() {
             @Override
             public boolean apply(Request<?> request) {
+                //找到这个标志。
                 return request.getTag() == tag;
             }
         });

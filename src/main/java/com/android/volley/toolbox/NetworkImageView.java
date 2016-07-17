@@ -28,6 +28,7 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the
  * associated request.
+ * 在你的Activity退出时候会自动取消网络请求，即完全不需要我们担心网络请求生命周期的问题。
  */
 public class NetworkImageView extends ImageView {
     /** The URL of the network image to load */
@@ -111,18 +112,22 @@ public class NetworkImageView extends ImageView {
      * @param isInLayoutPass True if this was invoked from a layout pass, false otherwise.
      */
     void loadImageIfNecessary(final boolean isInLayoutPass) {
+        //获取控件的宽和高
         int width = getWidth();
         int height = getHeight();
         ScaleType scaleType = getScaleType();
 
         boolean wrapWidth = false, wrapHeight = false;
+
         if (getLayoutParams() != null) {
+            // 如果控件是WRAP_CONTENT,wrapWidth为真。
             wrapWidth = getLayoutParams().width == LayoutParams.WRAP_CONTENT;
             wrapHeight = getLayoutParams().height == LayoutParams.WRAP_CONTENT;
         }
 
         // if the view's bounds aren't known yet, and this is not a wrap-content/wrap-content
         // view, hold off on loading the image.
+        //判断。
         boolean isFullyWrapContent = wrapWidth && wrapHeight;
         if (width == 0 && height == 0 && !isFullyWrapContent) {
             return;
@@ -130,6 +135,7 @@ public class NetworkImageView extends ImageView {
 
         // if the URL to be loaded in this view is empty, cancel any old requests and clear the
         // currently loaded image.
+        //
         if (TextUtils.isEmpty(mUrl)) {
             if (mImageContainer != null) {
                 mImageContainer.cancelRequest();

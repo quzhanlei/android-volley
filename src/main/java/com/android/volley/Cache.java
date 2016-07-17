@@ -66,6 +66,7 @@ public interface Cache {
      */
     public static class Entry {
         /** The data returned from cache. */
+        //缓存文件的字节数组
         public byte[] data;
 
         /** ETag for cache coherency. */
@@ -77,7 +78,7 @@ public interface Cache {
         /** The last modified date for the requested object. */
         public long lastModified;
 
-        /** TTL for this record. */
+        /** TTL for this record. 过期时间*/
         public long ttl;
 
         /** Soft TTL for this record. */
